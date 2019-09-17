@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, render_template
 import json
 import requests
 import time
@@ -37,9 +37,9 @@ atexit.register(lambda: scheduler.shutdown())
 def hello_world():
     return 'Hello World!'
 
-@app.route('/<class_group>')
-def class_group(class_group):
-   return render_template('/MyTimetable.htm', class_group = class_group)
+@app.route('/class/<class_group>', methods=['GET'])
+def test(class_group):
+   return render_template('MyTimetable.htm', class_group = class_group)
 
 # not sure if we need this
 @app.route('/city')
@@ -57,8 +57,6 @@ def add_course():
     if request.method == 'POST':
         """read post attribute and use that to store time data in cookie"""
         return
-
-
 
 
 if __name__ == '__main__':
