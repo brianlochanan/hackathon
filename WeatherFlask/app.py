@@ -6,6 +6,8 @@ import atexit
 
 from apscheduler.schedulers.background import BackgroundScheduler
 
+from api.ScheduleApi import ScheduleApi
+
 app = Flask(__name__)
 
 
@@ -39,7 +41,9 @@ def hello_world():
 
 @app.route('/class/<class_group>', methods=['GET'])
 def test(class_group):
-   return render_template('MyTimetable.htm', class_group = class_group)
+    scheduleApi = ScheduleApi()
+    print(scheduleApi.get_schedule_for_class_group())
+    return render_template('MyTimetable.htm', class_group = class_group)
 
 # not sure if we need this
 @app.route('/city')
