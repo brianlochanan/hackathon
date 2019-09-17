@@ -48,6 +48,13 @@ def show_city():
 
     return data['plaatsnaam'][0]["plaats"]
 
+@app.route('/city')
+def show_city():
+    with open("weather.txt") as f:
+        data = json.load(f)
+
+    return data['plaatsnaam'][0]["plaats"]
+
 if __name__ == '__main__':
     app.run()
 
