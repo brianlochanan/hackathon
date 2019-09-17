@@ -48,7 +48,7 @@ def show_city():
         data = json.load(f)
 
     return data['plaatsnaam'][0]["plaats"]
-
+    
 @app.route('/addCourse', methods=['GET','POST'])
 def add_course():
     if request.method == 'GET':
