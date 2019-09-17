@@ -37,6 +37,10 @@ atexit.register(lambda: scheduler.shutdown())
 def hello_world():
     return 'Hello World!'
 
+@app.route('/<class_group>')
+def class_group(class_group):
+   return render_template('/MyTimetable.htm', class_group = class_group)
+
 # not sure if we need this
 @app.route('/city')
 def show_city():
@@ -44,8 +48,7 @@ def show_city():
         data = json.load(f)
 
     return data['plaatsnaam'][0]["plaats"]
-
-
+    
 @app.route('/addCourse', methods=['GET','POST'])
 def add_course():
     if request.method == 'GET':
@@ -60,3 +63,4 @@ def add_course():
 
 if __name__ == '__main__':
     app.run()
+
