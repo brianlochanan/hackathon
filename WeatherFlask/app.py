@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 import json
 import requests
 import time
@@ -32,8 +32,8 @@ scheduler.start()
 # Shut down the scheduler when exiting the app
 atexit.register(lambda: scheduler.shutdown())
 
-
-@app.route('/')
+# this route should return the home page. i.e. the recommendation on what to wear
+@app.route('/', methods=['GET'])
 def hello_world():
     return 'Hello World!'
 
@@ -41,6 +41,7 @@ def hello_world():
 def class_group(class_group):
    return render_template('/MyTimetable.htm', class_group = class_group)
 
+# not sure if we need this
 @app.route('/city')
 def show_city():
     with open("weather.txt") as f:
@@ -48,12 +49,17 @@ def show_city():
 
     return data['plaatsnaam'][0]["plaats"]
 
-@app.route('/city')
-def show_city():
-    with open("weather.txt") as f:
-        data = json.load(f)
+@app.route('/addCourse', methods=['GET','POST'])
+def add_course():
+    if request.method == 'GET':
+        """show interface for adding courses"""
+        return
+    if request.method == 'POST':
+        """read post attribute and use that to store time data in cookie"""
+        return
 
-    return data['plaatsnaam'][0]["plaats"]
+
+
 
 if __name__ == '__main__':
     app.run()
