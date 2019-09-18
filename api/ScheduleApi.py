@@ -5,22 +5,38 @@ from pytz import timezone
 import calendar
 
 class ScheduleApi:
+
     class_group = ""
-    API_PATH = "https://rooster.hva.nl/m/api/timetable?start="+str(date.today())+"T00%3A00%3A00.000%2B02%3A00&limit=10&key=2019!studentset!FDMCI_"
+    API_PATH = "https://rooster.hva.nl/m/api/timetable?start="+str(date.today())+"T00%3A00%3A00.000%2B02%3A00&limit=10&key="
     API_DATA_FORMAT = "&format=json"
+    GET_CLASS = "https://rooster.hva.nl/m/api/search/timetables?q="
 
     def __init__(self, class_group):
         self.class_group = class_group
         pass
 
     def perform_request(self, path):
+
+        # Set cookie to authorize the program to use the timetable API
         session = requests.session()
         session.get("https://rooster.hva.nl/m")
         payload = {
             'JSESSIONID': session.cookies.get_dict()
         }
 
-        request = session.get(self.API_PATH + path + self.API_DATA_FORMAT, params=payload)
+        # Request student set by searching class
+        get_class = session.get(self.GET_CLASS + path +
+                                "&subscriptionGroup="+ str(datetime.now().year) +
+                                "&type=studentset&limit=50" + self.API_DATA_FORMAT, params=payload)
+
+        # Get student class
+        student_set = ""
+        if get_class.status_code == 200:
+            class_json = json.loads(get_class.content)
+            student_set = class_json['data'][0]['key']
+
+        # Request timetable API for student set
+        request = session.get(self.API_PATH + student_set + self.API_DATA_FORMAT, params=payload)
         if request.status_code == 200:
             return json.loads(request.content)
         return None
@@ -28,6 +44,7 @@ class ScheduleApi:
     def get_api_path(self):
         return self.API_PATH
 
+    # Concatenate weekday name, daynumber of the month, monthname and year
     def get_date_time_name(self, date):
         weekDay = calendar.day_name[datetime.fromtimestamp((int(str(date)[:-3]))).weekday()]
         dayNumber = datetime.fromtimestamp(int(str(date)[:-3])).strftime("%d")
@@ -45,6 +62,8 @@ class ScheduleApi:
 
         schedule = []
         for timetable in data['data']:
+
+            # Get specific datetime for comparing with weather datetime
             timeTableStartDate = datetime.fromtimestamp(int(str(timetable['startDate'])[:-3])).strftime("%d-%m-%Y %H:00")
             timeTableEndDate = datetime.fromtimestamp(int(str(timetable['startDate'])[:-3])).strftime(
                 "%d-%m-%Y %H:00")
@@ -53,7 +72,6 @@ class ScheduleApi:
             endTime = datetime.fromtimestamp(int(str(timetable['endDate'])[:-3])).strftime("%H:%M")
 
             dateName = self.get_date_time_name(timetable['startDate'])
-
             weekNumber = (datetime.fromtimestamp(int(str(timetable['startDate'])[:-3])).strftime("%V"))
 
             schedule.append({

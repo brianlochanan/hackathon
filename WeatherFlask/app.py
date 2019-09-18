@@ -48,6 +48,7 @@ def test(class_group):
 
     schedule_result = (scheduleApi.get_schedule_for_class_group())
 
+    # Give HTML data to work with
     return render_template('MyTimetable.htm',
                            class_group = class_group,
                            result = schedule_result,
