@@ -1,7 +1,6 @@
 import json
 import datetime
 
-
 class GetWeather:
     with open("weather.txt") as f:
         data = json.load(f)

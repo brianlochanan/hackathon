@@ -45,7 +45,6 @@ def hello_world():
 def test(class_group):
     scheduleApi = ScheduleApi(class_group)
     getW = GetWeather()
-
     schedule_result = (scheduleApi.get_schedule_for_class_group())
 
     # Give HTML data to work with
