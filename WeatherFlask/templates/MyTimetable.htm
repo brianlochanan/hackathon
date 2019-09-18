@@ -4256,7 +4256,9 @@
                                                 </div>
                                                 <div class="location" aria-label="locatie: KSH 06A35, ">
                     <span class="inner">
+                            {% if result[i]['locations']|length %}
                             {{ result[i]['locations'][0]['name'] }}
+                            {% endif %}
                     </span>
                                                 </div>
                                             </div>

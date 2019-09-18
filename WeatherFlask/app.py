@@ -42,7 +42,7 @@ def hello_world():
 
 @app.route('/class/<class_group>', methods=['GET'])
 def test(class_group):
-    scheduleApi = ScheduleApi()
+    scheduleApi = ScheduleApi(class_group)
     schedule_result = (scheduleApi.get_schedule_for_class_group())
     print(schedule_result[0]['locations'])
     return render_template('MyTimetable.htm', class_group = class_group, result = schedule_result, length = len(schedule_result))

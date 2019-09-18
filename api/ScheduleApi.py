@@ -5,10 +5,12 @@ from pytz import timezone
 import calendar
 
 class ScheduleApi:
-    API_PATH = "https://rooster.hva.nl/m/api/timetable?start="+str(date.today())+"T00%3A00%3A00.000%2B02%3A00&limit=5&key=2019!studentset!FDMCI_IVMSFS"
+    class_group = ""
+    API_PATH = "https://rooster.hva.nl/m/api/timetable?start="+str(date.today())+"T00%3A00%3A00.000%2B02%3A00&limit=10&key=2019!studentset!FDMCI_"
     API_DATA_FORMAT = "&format=json"
 
-    def __init__(self):
+    def __init__(self, class_group):
+        self.class_group = class_group
         pass
 
     def perform_request(self, path):
@@ -36,7 +38,7 @@ class ScheduleApi:
         return dateTimeName
 
     def get_schedule_for_class_group(self):
-        data = self.perform_request("")
+        data = self.perform_request(self.class_group)
         if 'data' not in data:
             print("No 'results' in json")
             return None
