@@ -1,9 +1,11 @@
-from datetime import date
+from datetime import datetime, date
 import requests
 import json
+from pytz import timezone
+import calendar
 
 class ScheduleApi:
-    API_PATH = "https://rooster.hva.nl/m/api/timetable?start=2019-09-17T00%3A00%3A00.000%2B02%3A00&limit=25&key=2019!studentset!FDMCI_IVMSFS"
+    API_PATH = "https://rooster.hva.nl/m/api/timetable?start="+str(date.today())+"T00%3A00%3A00.000%2B02%3A00&limit=5&key=2019!studentset!FDMCI_IVMSFS"
     API_DATA_FORMAT = "&format=json"
 
     def __init__(self):
@@ -24,6 +26,15 @@ class ScheduleApi:
     def get_api_path(self):
         return self.API_PATH
 
+    def get_date_time_name(self, date):
+        weekDay = calendar.day_name[datetime.fromtimestamp((int(str(date)[:-3]))).weekday()]
+        dayNumber = datetime.fromtimestamp(int(str(date)[:-3])).strftime("%d")
+        monthName = datetime.fromtimestamp(int(str(date)[:-3])).strftime("%B")
+        year = datetime.fromtimestamp(int(str(date)[:-3])).strftime("%Y")
+        dateTimeName = (str(weekDay + " " + dayNumber + " " + monthName + " " + year).lower())
+
+        return dateTimeName
+
     def get_schedule_for_class_group(self):
         data = self.perform_request("")
         if 'data' not in data:
@@ -31,15 +42,23 @@ class ScheduleApi:
             return None
 
         schedule = []
-        for schedule in data['data']:
+        for timetable in data['data']:
 
-            #print schedule
-            print(schedule)
-            # schedule.append({
-            #     'id': schedule['id'],
-            #     'name': schedule['_display'],
-            #     'type': schedule['waste_name'],
-            #     'address': schedule['address'],
-            # })
+            startTime = datetime.fromtimestamp(int(str(timetable['startDate'])[:-3])).strftime("%H:%M")
+            endTime = datetime.fromtimestamp(int(str(timetable['endDate'])[:-3])).strftime("%H:%M")
 
-        # return trash_bins
+            dateName = self.get_date_time_name(timetable['startDate'])
+
+            weekNumber = (datetime.fromtimestamp(int(str(timetable['startDate'])[:-3])).strftime("%V"))
+
+            schedule.append({
+                'id': timetable['id'],
+                'name': timetable['name'],
+                'startTime': startTime,
+                'endTime': endTime,
+                'dateName': dateName,
+                'weekNumber': weekNumber,
+                'locations': timetable['locations']
+            })
+
+        return schedule
