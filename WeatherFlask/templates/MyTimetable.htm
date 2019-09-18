@@ -4143,7 +4143,9 @@
         font-size: 18px !important;
         color: #ffffff !important;
         content: "\F00D" !important;
-    }</style>
+    }
+
+    </style>
 </head>
 <body role="application">
 
@@ -4203,8 +4205,6 @@
                                 lezen.</p>
                         </div>
                     </section>
-
-
                     <ul id="events">
                         {% for i in range(0, length) %}
                         <li class="day">
@@ -4229,18 +4229,14 @@
                             </h2>
                             {% endif %}
                             <ul class="day-events">
-
                                 <li class="event"><a href="#">
                                     <div class="event-color"></div>
-
                                     <div class="event-infowrapper">
                                         <div class="time">
                                             <div class="details">
                                                 <div class="start" aria-label="Begint om 8:30">
                                                     <span class="inner">{{ result[i]['startTime'] }}</span>
                                                 </div>
-
-
                                                 <div class="end" aria-label="Eindigt om 11:50">
                                                     <span class="inner">{{ result[i]['endTime'] }}</span>
                                                 </div>
@@ -4250,16 +4246,26 @@
                                         <div class="right">
                                             <div class="details">
                                                 <div class="description">
+                                                    <span class="inner">{{ result[i]['name'] }}
 
-
-                                                    <span class="inner">{{ result[i]['name'] }}</span>
+                                                        {% for j in range(0, weather_length) %}
+                                                        {% if weather['Date'][j] == result[i]['timeTableStartDate'] %}
+                                                            | <span> The weather at this time is: {{ weather['Temperature'][j] }} &#8451</span>
+                                                        {% endif %}
+                                                        {% endfor %}
                                                 </div>
                                                 <div class="location" aria-label="locatie: KSH 06A35, ">
-                    <span class="inner">
-                            {% if result[i]['locations']|length %}
-                            {{ result[i]['locations'][0]['name'] }}
-                            {% endif %}
-                    </span>
+                                                <span class="inner">
+                                                        {% if result[i]['locations']|length %}
+                                                            {{ result[i]['locations'][0]['name'] }}
+                                                        {% endif %}
+
+                                                    {% for j in range(0, weather_length) %}
+                                                    {% if weather['Date'][j] == result[i]['timeTableEndDate'] %}
+                                                        | <span>The weather at this time is: {{ weather['Temperature'][j] }} &#8451;</span>
+                                                    {% endif %}
+                                                    {% endfor %}
+                                                </span>
                                                 </div>
                                             </div>
                                         </div>

@@ -8,6 +8,7 @@ import atexit
 from apscheduler.schedulers.background import BackgroundScheduler
 
 from api.ScheduleApi import ScheduleApi
+from weather.GetWeather import GetWeather
 
 app = Flask(__name__)
 
@@ -43,9 +44,17 @@ def hello_world():
 @app.route('/class/<class_group>', methods=['GET'])
 def test(class_group):
     scheduleApi = ScheduleApi(class_group)
+    getW = GetWeather()
+
     schedule_result = (scheduleApi.get_schedule_for_class_group())
-    print(schedule_result[0]['locations'])
-    return render_template('MyTimetable.htm', class_group = class_group, result = schedule_result, length = len(schedule_result))
+
+    return render_template('MyTimetable.htm',
+                           class_group = class_group,
+                           result = schedule_result,
+                           length = len(schedule_result),
+                           weather = getW.preweather(20),
+                           weather_length = len(getW.preweather(20)['Date'])
+                           )
 
 # not sure if we need this
 @app.route('/city')

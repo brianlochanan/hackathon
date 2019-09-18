@@ -45,6 +45,9 @@ class ScheduleApi:
 
         schedule = []
         for timetable in data['data']:
+            timeTableStartDate = datetime.fromtimestamp(int(str(timetable['startDate'])[:-3])).strftime("%d-%m-%Y %H:00")
+            timeTableEndDate = datetime.fromtimestamp(int(str(timetable['startDate'])[:-3])).strftime(
+                "%d-%m-%Y %H:00")
 
             startTime = datetime.fromtimestamp(int(str(timetable['startDate'])[:-3])).strftime("%H:%M")
             endTime = datetime.fromtimestamp(int(str(timetable['endDate'])[:-3])).strftime("%H:%M")
@@ -60,6 +63,8 @@ class ScheduleApi:
                 'endTime': endTime,
                 'dateName': dateName,
                 'weekNumber': weekNumber,
+                'timeTableStartDate': timeTableStartDate,
+                'timeTableEndDate': timeTableEndDate,
                 'locations': timetable['locations']
             })
 
