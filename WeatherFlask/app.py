@@ -1,10 +1,7 @@
-from flask import Flask, request, render_template, redirect, make_response
-from datetime import datetime
-import json
+from flask import Flask, request, render_template, redirect
 import requests
-import time
 import atexit
-import http.cookies
+
 
 from apscheduler.schedulers.background import BackgroundScheduler
 
@@ -65,25 +62,6 @@ def test(class_group):
                            weather=getW.weather10(),
                            weather_length=len(getW.weather10()['Date'])
                            )
-
-
-# not sure if we need this
-@app.route('/city')
-def show_city():
-    with open("weather.txt") as f:
-        data = json.load(f)
-
-    return data['plaatsnaam'][0]["plaats"]
-
-
-@app.route('/addCourse', methods=['GET', 'POST'])
-def add_course():
-    if request.method == 'GET':
-        """show interface for adding courses"""
-        return
-    if request.method == 'POST':
-        """read post attribute and use that to store time data in cookie"""
-        return
 
 
 if __name__ == '__main__':
