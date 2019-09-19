@@ -117,8 +117,11 @@
                         </div>
                     </section>
                     <ul id="events">
+                        {% set week = result[0]['weekNumber'] %}
                         {% for i in range(0, length) %}
+                        {% if week == result[i]['weekNumber'] %}
                         <li class="day">
+
 
                             {% if i == 0 %}
                             <h2 class="day-header">
@@ -162,9 +165,8 @@
                                                         {% for j in range(0, weather_length) %}
                                                         {% if weather['Date'][j] == result[i]['timeTableStartDate'] %}
                                                             | <span> Temperature: {{ weather['Temperature'][j] }} &#8451
-                                                                   | Precipitation: {{ weather['Precipitations'][j] }}
-                                                            | WindSpeed: {{ weather['Wind Speed'][j] }} km/h
-
+                                                                   | Precipitation: {{ weather['Precipitations'][j] }} mm
+                                                            | Wind speed: {{ weather['Wind Speed'][j] }} km/h
 
                                                         </span>
 
@@ -190,6 +192,7 @@
                                     </div>
                                 </a>
                                 </li>
+                                {% endif %}
                                 {% endfor %}
                             </ul>
                         </li>
