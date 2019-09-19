@@ -182,7 +182,9 @@
 
                                                     {% for j in range(0, weather_length) %}
                                                     {% if weather['Date'][j] == result[i]['timeTableEndDate'] %}
-                                                        | <span>The weather at this time is: {{ weather['Temperature'][j] }} &#8451;</span>
+                                                        | <span> Tempeature: {{ weather['Temperature'][j] }} &#8451
+                                                                   | Precipitation: {{ weather['Precipitations'][j] }} mm
+                                                            | Wind speed: {{ weather['Wind Speed'][j] }} km/h
                                                     {% endif %}
                                                     {% endfor %}
                                                 </span>
