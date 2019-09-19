@@ -21,10 +21,10 @@ def request_and_save_weather_data():
         ('key', '85c9b987c6'),
     )
 
-    response = requests.get('https://meteoserver.nl/api/uurverwachting.php', params=params)
+    response = requests.get('https://meteoserver.nl/api/uurverwachting_gfs.php', params=params)
     content = response.content
 
-    file = open("weather.txt", "w+")
+    file = open("weather10.txt", "w+")
     file.write(str(response.content)[2:-1])
     print('wrote new weather data file')
 

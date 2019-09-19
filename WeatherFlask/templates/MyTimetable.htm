@@ -67,11 +67,7 @@
     <div class="view hidden" id="view-entrymenu"></div>
     <div class="view" id="view-main">
         <header role="banner">
-            <form method="POST">
-                <input style="margin-left: 60px;" placeholder="Put in your class here" name="course_code" type="text">
-                <input name="submit" type="submit">
-            </form>
-            <!--<h1 class="h1-two-right">FDMCI_{{ class_group }}</h1>-->
+            <h1 class="h1-two-right">FDMCI_{{ class_group }}</h1>
 
             <button class="header-button header-button-left header-button-left-menu" id="goto-menu" title="Hoofdmenu">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 768 768">
@@ -165,7 +161,14 @@
 
                                                         {% for j in range(0, weather_length) %}
                                                         {% if weather['Date'][j] == result[i]['timeTableStartDate'] %}
-                                                            | <span> The weather at this time is: {{ weather['Temperature'][j] }} &#8451</span>
+                                                            | <span> Temperature: {{ weather['Temperature'][j] }} &#8451
+                                                                   | Precipitation: {{ weather['Precipitations'][j] }}
+                                                            | WindSpeed: {{ weather['Wind Speed'][j] }} km/h
+
+
+                                                        </span>
+
+
                                                         {% endif %}
                                                         {% endfor %}
                                                 </div>

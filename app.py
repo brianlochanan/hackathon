@@ -20,17 +20,17 @@ def request_and_save_weather_data():
         ('key', '85c9b987c6'),
     )
 
-    response = requests.get('https://meteoserver.nl/api/uurverwachting.php', params=params)
+    response = requests.get('https://meteoserver.nl/api/uurverwachting_gfs.php', params=params)
     content = response.content
 
-    file = open("weather.txt", "w+")
+    file = open("weather10.txt", "w+")
     file.write(str(response.content)[2:-1])
     print('wrote new weather data file')
 
 
 # initiate scheduler for retrieving weather data
 scheduler = BackgroundScheduler()
-scheduler.add_job(func=request_and_save_weather_data, trigger="interval", hours=1)
+scheduler.add_job(func=request_and_save_weather_data, trigger="interval", seconds=5)
 scheduler.start()
 
 # Shut down the scheduler when exiting the app
