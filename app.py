@@ -1,4 +1,6 @@
-from flask import Flask, request, render_template, jsonify
+from logging import exception
+
+from flask import Flask, request, render_template, jsonify, make_response
 import json
 import requests
 import time
@@ -68,51 +70,65 @@ def add_course():
 
 @app.route('/getWeather', methods=['GET','POST'])
 def get_weather():
-    start_h = request.args.get('start_h')
-    start_d = request.args.get('start_d')
-    end_h = request.args.get('end_h')
-    end_d = request.args.get('end_d')
-    start = start_d + " " + start_h
-    end = end_d + " " + end_h
-    #print(start)
+    if request.method == 'GET':
+        start_h = request.args.get('start_h')
+        start_d = request.args.get('start_d')
+        end_h = request.args.get('end_h')
+        end_d = request.args.get('end_d')
+        start = str(start_d) + " " + str(start_h)
+        end = str(end_d) + " " + str(end_h)
+        #print(start)
 
-    with open("weather.txt") as f:
-        data = json.load(f)
+        with open("weather.txt") as f:
+            data = json.load(f)
 
-    for row in data['data']:
-        print(row['tijd_nl'])
-        print(start)
-        print(end)
-        print()
-        if(row['tijd_nl'] == start):
-            start_temp = row['temp']
-            start_wind = row['winds']
-            start_neersl = row['neersl']
-            print("start")
+        for row in data['data']:
+            print(row['tijd_nl'])
+            print(start)
+            print(end)
+            print()
+            if(row['tijd_nl'] == start):
+                start_temp = row['temp']
+                start_wind = row['winds']
+                start_neersl = row['neersl']
+                print("start")
 
-        elif(row['tijd_nl'] == end):
-            end_temp = row['temp']
-            end_wind = row['winds']
-            end_neersl = row['neersl']
-            print("end")
+            elif(row['tijd_nl'] == end):
+                end_temp = row['temp']
+                end_wind = row['winds']
+                end_neersl = row['neersl']
+                print("end")
 
-    try:
+        try:
 
-        r = [
-                    {
-                        "temp": start_temp,
-                        "winds": start_wind,
-                        "neersl": start_neersl,
-                    },
-                    {
-                        "temp": end_temp,
-                        "winds": end_wind,
-                        "neersl": end_neersl,
-                    },
+            r = [
+                        {
+                            "temp": start_temp,
+                            "winds": start_wind,
+                            "neersl": start_neersl,
+                        },
+                        {
+                            "temp": end_temp,
+                            "winds": end_wind,
+                            "neersl": end_neersl,
+                        }
                 ]
-        return jsonify(results = r)
-    except:
-        return "Error in parameters"
+            print(jsonify(results = r))
+            return make_response(jsonify(results = r))
+        except:
+            return "exception ocurred"
+    if request.method == 'POST':
+        present_courses = request.cookies.get('courses')
+
+        course_code = request.form['course_code']
+        course_code = course_code.upper()
+
+        present_courses = present_courses + ',' + course_code
+        response = make_response(render_template('MyTimetable.htm'))
+        response.set_cookie('courses', course_code)
+        return response
+
+
 
 
 if __name__ == '__main__':
