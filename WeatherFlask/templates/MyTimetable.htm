@@ -173,6 +173,7 @@
 
                                                         {% endif %}
                                                         {% endfor %}
+                                                     </span>
                                                 </div>
                                                 <div class="location" aria-label="locatie: KSH 06A35, ">
                                                 <span class="inner">
@@ -182,9 +183,10 @@
 
                                                     {% for j in range(0, weather_length) %}
                                                     {% if weather['Date'][j] == result[i]['timeTableEndDate'] %}
-                                                        | <span> Tempeature: {{ weather['Temperature'][j] }} &#8451
+                                                        | <span> Temperature: {{ weather['Temperature'][j] }} &#8451
                                                                    | Precipitation: {{ weather['Precipitations'][j] }} mm
                                                             | Wind speed: {{ weather['Wind Speed'][j] }} km/h
+                                                        </span>
                                                     {% endif %}
                                                     {% endfor %}
                                                 </span>

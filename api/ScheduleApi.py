@@ -55,7 +55,7 @@ class ScheduleApi:
 
             # Get specific datetime for comparing with weather datetime
             timeTableStartDate = datetime.fromtimestamp(int(str(timetable['startDate'])[:-3])).strftime("%d-%m-%Y %H:00")
-            timeTableEndDate = datetime.fromtimestamp(int(str(timetable['startDate'])[:-3])).strftime(
+            timeTableEndDate = datetime.fromtimestamp(int(str(timetable['endDate'])[:-3])).strftime(
                 "%d-%m-%Y %H:00")
 
             startTime = datetime.fromtimestamp(int(str(timetable['startDate'])[:-3])).strftime("%H:%M")
