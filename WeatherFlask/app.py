@@ -1,9 +1,10 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, make_response
 from datetime import datetime
 import json
 import requests
 import time
 import atexit
+import http.cookies
 
 from apscheduler.schedulers.background import BackgroundScheduler
 
@@ -41,8 +42,9 @@ atexit.register(lambda: scheduler.shutdown())
 def hello_world():
     return 'Hello World!'
 
-@app.route('/class/<class_group>', methods=['GET'])
+@app.route('/class/<class_group>', methods=['GET', 'POST'])
 def test(class_group):
+
     scheduleApi = ScheduleApi(class_group)
     getW = GetWeather()
     schedule_result = (scheduleApi.get_schedule_for_class_group())
@@ -52,8 +54,8 @@ def test(class_group):
                            class_group = class_group,
                            result = schedule_result,
                            length = len(schedule_result),
-                           weather = getW.preweather(20),
-                           weather_length = len(getW.preweather(20)['Date'])
+                           weather = getW.weather10(),
+                           weather_length = len(getW.weather10()['Date'])
                            )
 
 # not sure if we need this

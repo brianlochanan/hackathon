@@ -80,7 +80,7 @@ class GetWeather:
         return s3
 
 
-p = GetWeather()
-
-print(p.weather10())
+# p = GetWeather()
+#
+# print(p.weather10())
 
