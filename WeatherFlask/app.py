@@ -2,6 +2,10 @@ from flask import Flask, request, render_template, redirect
 import requests
 import atexit
 
+import os,sys,inspect
+currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+parentdir = os.path.dirname(currentdir)
+sys.path.insert(0,parentdir)
 
 from apscheduler.schedulers.background import BackgroundScheduler
 
@@ -14,7 +18,7 @@ app = Flask(__name__)
 def request_and_save_weather_data():
     params = (
         ('locatie', 'Amsterdam'),
-        ('key', '85c9b987c6'),
+        ('key', 'a1c65a55b9'),
     )
 
     response = requests.get('https://meteoserver.nl/api/uurverwachting_gfs.php', params=params)
